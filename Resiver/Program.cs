@@ -2,6 +2,7 @@
 using RabbitMQ.Client.Events;
 using System.Text;
 
+//2024-08-21
 var factory = new ConnectionFactory { HostName = "localhost" };
 
 //Create connection
@@ -20,9 +21,10 @@ consumer.Received += (sender, eventArg) =>
     var message = Encoding.UTF8.GetString(body);
     Console.WriteLine($"Resived message => {message}");
     Thread.Sleep(1);
+    //2=> AutoAck was set manually
     channel.BasicAck(eventArg.DeliveryTag, true );
 };
-
+//01 => autoAck = false
 channel.BasicConsume(queueName, false, consumer);
 
 

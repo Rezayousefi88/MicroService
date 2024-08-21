@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
-
+//2024-08-21
 //access to rabbitMQ
 //var factory = new ConnectionFactory();
 //factory.Uri = new Uri("amqp://guest:guest@localhost:15672");
