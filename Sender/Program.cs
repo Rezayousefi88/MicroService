@@ -15,6 +15,7 @@ var channel = connection.CreateModel();
 var queueName = "MyQueue01";
 //<param name="durable">Should this queue will survive a broker restart?</param>
 channel.QueueDeclare(queueName, true, false, false, null);
+
 int i = 1;
 var action = true;
 while (action)
@@ -26,7 +27,7 @@ while (action)
     properties.Persistent = true;
 
     channel.BasicPublish("", queueName, properties, body);
-    if (i > 500)
+    if (i > 100)
     {
         action = false;
     }
