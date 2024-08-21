@@ -476,3 +476,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /.vs/Rabbit-01/v17/.suo
+/Resiver/bin/Debug/net7.0/Resiver.dll
