@@ -11,20 +11,27 @@ var connection = factory.CreateConnection();
 //Create channel
 var channel = connection.CreateModel();
 var queueName = "MyQueue01";
+//02 create queue
 channel.QueueDeclare(queueName, true, false, false, null);
-
+//03 => how read message from queue
+channel.BasicQos(0, 1, false);
 //create consumer
 var consumer = new EventingBasicConsumer(channel);
 consumer.Received += (sender, eventArg) =>
 {
     var body = eventArg.Body.ToArray();
     var message = Encoding.UTF8.GetString(body);
+    //01
+    var random = new Random();
+    int sleep = random.Next(0, 3) * 1000;
+    Console.WriteLine($"sleep => {sleep} || DeliveryTag => {eventArg.DeliveryTag}");
+    Thread.Sleep(sleep);
+
     Console.WriteLine($"Resived message => {message}");
-    Thread.Sleep(1);
-    //2=> AutoAck was set manually
-    channel.BasicAck(eventArg.DeliveryTag, true );
+
+    channel.BasicAck(eventArg.DeliveryTag, true);
 };
-//01 => autoAck = false
+
 channel.BasicConsume(queueName, false, consumer);
 
 
