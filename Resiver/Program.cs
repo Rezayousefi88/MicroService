@@ -2,6 +2,15 @@
 using RabbitMQ.Client.Events;
 using System.Text;
 
+//2024-10-14 exchange
+/*
+Direct => ارسال به صف بطور مستقیم
+Fanout => پیام به همه ارسال میشه
+Topic => بر اساس الگو تصمیم میگیره به کدام الگو پیام ارسال کنه
+Headers => براساس پارامتر هایی که در هدر و کیو قرار میدیم مشخص میکنیم پیام به کجا ارسال بشه   
+*/
+
+
 //2024-08-21
 var factory = new ConnectionFactory { HostName = "localhost" };
 
