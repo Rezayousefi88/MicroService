@@ -1,4 +1,5 @@
 ﻿using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Text;
 
 /*
@@ -7,18 +8,23 @@ Direct => ارسال به صف بطور مستقیم
 Topic => بر اساس الگو تصمیم میگیره به کدام الگو پیام ارسال کنه
 Headers => براساس پارامتر هایی که در هدر و کیو قرار میدیم مشخص میکنیم پیام به کجا ارسال بشه   
 */
-
 var factory = new ConnectionFactory { HostName = "localhost" };
 var connection = factory.CreateConnection();
 var channel = connection.CreateModel();
+var queueName = "fanout.Test2";
 string exchangeName = "Order";
-channel.ExchangeDeclare(exchangeName, ExchangeType.Fanout, false);
+channel.QueueDeclare(queueName, false, true, false);
+channel.QueueBind(queueName, exchangeName, "");
 
-string message = $"this is a test meaasge from my sender at{DateTime.Now}";
-var body = Encoding.UTF8.GetBytes(message);
-channel.BasicPublish(exchangeName, "", null, body);
+var consumer = new EventingBasicConsumer(channel);
+consumer.Received += (sender, eventArg) =>
+{
+    var body = eventArg.Body.ToArray();
+    var message = Encoding.UTF8.GetString(body);
+    Console.WriteLine($"Resived message => {message}");
+};
 
+channel.BasicConsume(queueName, true, consumer);
 Console.ReadLine();
-
 
 
